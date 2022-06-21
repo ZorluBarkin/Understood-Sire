@@ -1,0 +1,1 @@
+Make the characters on the battlefield (3D space, plane) rotate on X-Axis by 30 degrees to get rid of warping issues. (Camera is rotated by 30 degrees, match the camera rotation)
