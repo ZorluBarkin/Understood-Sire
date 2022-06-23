@@ -28,6 +28,8 @@ public class LineBackScript : MonoBehaviour
     [SerializeField] private Sprite rearward;
     private Sprite normalSprite;
 
+    [SerializeField] private GameObject smoke; // currently assign in editor
+
     private Vector3 initialPosition; // for the return position of the retreat
 
     // to calculate moral Shock
@@ -92,27 +94,7 @@ public class LineBackScript : MonoBehaviour
 
         if (attack && timeToFire >= fireTime)
         {
-
-            RaycastHit hit;
-
-            if (Physics.Raycast(rayPosition, transform.forward, out hit, range))
-            {
-
-                if (hit.collider.CompareTag("Enemy"))
-                {
-                    damage = Volley(hit.distance);
-
-                    // Do Damage
-                    hit.transform.gameObject.GetComponent<LineFrontScript>().health -= damage;
-
-                    // Under Fire Stress
-                    hit.transform.gameObject.GetComponent<LineFrontScript>().morale -= soldierCount;
-
-                    timeToFire = 0;
-                }
-
-            }
-
+            Shoot();
         }
 
         if (timeToFire >= 15.1f)
@@ -223,4 +205,33 @@ public class LineBackScript : MonoBehaviour
 
         transform.position += new Vector3(0f, 0f, 0.005f);
     }
+
+    private void Shoot()
+    {
+
+        RaycastHit hit;
+
+        if (Physics.Raycast(rayPosition, transform.forward, out hit, range))
+        {
+            Vector3 smokePos = transform.position;
+            smokePos.y += 1f; // make the smoke spawn in front of the unit
+            Instantiate(smoke, smokePos, Quaternion.identity); // smoke spawn
+
+            if (hit.collider.CompareTag("Enemy"))
+            {
+                damage = Volley(hit.distance);
+
+                // Do Damage
+                hit.transform.gameObject.GetComponent<LineFrontScript>().health -= damage;
+
+                // Under Fire Stress
+                hit.transform.gameObject.GetComponent<LineFrontScript>().morale -= soldierCount;
+
+                timeToFire = 0;
+            }
+
+        }
+
+    }
+
 }

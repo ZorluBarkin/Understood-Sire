@@ -30,6 +30,8 @@ public class LineFrontScript : MonoBehaviour
 
     private Vector3 initialPosition; // for the return position of the retreat
 
+    [SerializeField] private GameObject smoke;
+
     // to calculate moral Shock
     private int oldHealth;
     private int healthDifference;
@@ -93,25 +95,7 @@ public class LineFrontScript : MonoBehaviour
         if (attack && timeToFire >= fireTime)
         {
 
-            RaycastHit hit;
-
-            if (Physics.Raycast(rayPosition, -transform.forward, out hit, range))
-            {
-
-                if (hit.collider.CompareTag("Friendly"))
-                {
-                    damage = Volley(hit.distance);
-
-                    // Do Damage
-                    hit.transform.gameObject.GetComponent<LineBackScript>().health -= damage;
-
-                    // Under Fire Stress
-                    hit.transform.gameObject.GetComponent<LineBackScript>().morale -= soldierCount;
-                    
-                    timeToFire = 0;
-                }
-                
-            }
+            Shoot();
 
         }
 
@@ -223,5 +207,33 @@ public class LineFrontScript : MonoBehaviour
         }
 
         transform.position -= new Vector3(0f, 0f, 0.005f);
+    }
+
+    private void Shoot()
+    {
+
+        RaycastHit hit;
+
+        if (Physics.Raycast(rayPosition, -transform.forward, out hit, range))
+        {
+            Vector3 smokePos = transform.position;
+            smokePos.y += 1f; // make the smoke spawn in front of the unit
+            Instantiate(smoke, smokePos, Quaternion.identity); // smoke spawn
+
+            if (hit.collider.CompareTag("Friendly"))
+            {
+                damage = Volley(hit.distance);
+
+                // Do Damage
+                hit.transform.gameObject.GetComponent<LineBackScript>().health -= damage;
+
+                // Under Fire Stress
+                hit.transform.gameObject.GetComponent<LineBackScript>().morale -= soldierCount;
+
+                timeToFire = 0;
+            }
+
+        }
+
     }
 }
