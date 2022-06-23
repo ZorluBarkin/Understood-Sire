@@ -208,6 +208,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: French Line Front Close (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 9165107344089249863, guid: 9ab25ca8c30278f48a633a8cec4ab358, type: 3}
+      propertyPath: rearward
+      value: 
+      objectReference: {fileID: 21300000, guid: 0d70e5f9922b3524db0316b753b64743, type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9ab25ca8c30278f48a633a8cec4ab358, type: 3}
 --- !u!1001 &704069654
@@ -265,6 +269,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: French Line Front Close (2)
       objectReference: {fileID: 0}
+    - target: {fileID: 9165107344089249863, guid: 9ab25ca8c30278f48a633a8cec4ab358, type: 3}
+      propertyPath: rearward
+      value: 
+      objectReference: {fileID: 21300000, guid: 0d70e5f9922b3524db0316b753b64743, type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9ab25ca8c30278f48a633a8cec4ab358, type: 3}
 --- !u!1 &705507993
@@ -428,7 +436,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1117505435}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -1, y: 0, z: 1}
+  m_LocalPosition: {x: -2, y: 0, z: 1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1867740616}
@@ -880,6 +888,10 @@ PrefabInstance:
       propertyPath: Attack
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1044994516564503213, guid: af13755a629c08d4ebb6c7365b155abc, type: 3}
+      propertyPath: rearward
+      value: 
+      objectReference: {fileID: 21300000, guid: 9b1936584b2bdfc4186aad68c9236939, type: 3}
     - target: {fileID: 1044994516685533682, guid: af13755a629c08d4ebb6c7365b155abc, type: 3}
       propertyPath: m_LocalRotation.w
       value: 0.9659258
@@ -979,8 +991,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1183318353}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.08, z: 1}
-  m_LocalScale: {x: 2, y: 1, z: 1}
+  m_LocalPosition: {x: 0, y: -0.21, z: 1}
+  m_LocalScale: {x: 2, y: 0.75, z: 1}
   m_Children: []
   m_Father: {fileID: 1867740616}
   m_RootOrder: 0
@@ -1461,6 +1473,10 @@ PrefabInstance:
       propertyPath: Attack
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1044994516564503213, guid: af13755a629c08d4ebb6c7365b155abc, type: 3}
+      propertyPath: rearward
+      value: 
+      objectReference: {fileID: 21300000, guid: 9b1936584b2bdfc4186aad68c9236939, type: 3}
     - target: {fileID: 1044994516685533682, guid: af13755a629c08d4ebb6c7365b155abc, type: 3}
       propertyPath: m_LocalRotation.w
       value: 0.9659258
@@ -1560,7 +1576,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1619212184}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1, y: 0, z: 1}
+  m_LocalPosition: {x: 2, y: 0, z: 1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1867740616}
@@ -1900,6 +1916,10 @@ PrefabInstance:
       propertyPath: Attack
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1044994516564503213, guid: af13755a629c08d4ebb6c7365b155abc, type: 3}
+      propertyPath: rearward
+      value: 
+      objectReference: {fileID: 21300000, guid: 9b1936584b2bdfc4186aad68c9236939, type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: af13755a629c08d4ebb6c7365b155abc, type: 3}
 --- !u!1001 &6312665635552007309
@@ -1957,5 +1977,9 @@ PrefabInstance:
       propertyPath: m_Name
       value: French Line Front Close
       objectReference: {fileID: 0}
+    - target: {fileID: 9165107344089249863, guid: 9ab25ca8c30278f48a633a8cec4ab358, type: 3}
+      propertyPath: rearward
+      value: 
+      objectReference: {fileID: 21300000, guid: 0d70e5f9922b3524db0316b753b64743, type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9ab25ca8c30278f48a633a8cec4ab358, type: 3}

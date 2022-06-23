@@ -6,7 +6,10 @@ public class LineFrontScript : MonoBehaviour
 {
 
     public int health;
-    public bool Attack; //private bool Attack;
+    public bool attack;
+    private bool retreat;
+    private bool run;
+
     private const float range = 5f;
     private int soldierCount = 17;
 
@@ -22,6 +25,11 @@ public class LineFrontScript : MonoBehaviour
 
     public float morale;
 
+    [SerializeField] private Sprite rearward;
+    private Sprite normalSprite;
+
+    private Vector3 initialPosition; // for the return position of the retreat
+
     // to calculate moral Shock
     private int oldHealth;
     public int healthDifference;
@@ -33,7 +41,10 @@ public class LineFrontScript : MonoBehaviour
         morale = 100;
         oldHealth = health;
 
-        Attack = false;
+        attack = false;
+        run = false;
+        retreat = false;
+
         rayPosition = transform.position;
         rayPosition.y += 0.5f;
 
@@ -41,7 +52,10 @@ public class LineFrontScript : MonoBehaviour
 
         // to rotate relative to the camera
         float rotateY = transform.position.x;
-        GetComponentInChildren<Transform>().eulerAngles = new Vector3(0f, rotateY, 0f);
+
+        normalSprite = GetComponentInChildren<SpriteRenderer>().sprite;
+
+        initialPosition = transform.position;
     }
 
     // Update is called once per frame
@@ -75,7 +89,7 @@ public class LineFrontScript : MonoBehaviour
         // reload timer
         timeToFire += Time.deltaTime * morale / 100;
 
-        if (Attack && timeToFire >= fireTime)
+        if (attack && timeToFire >= fireTime)
         {
 
             RaycastHit hit;
@@ -138,13 +152,46 @@ public class LineFrontScript : MonoBehaviour
         else if (morale < 15 || health <= 4)
         {
             timeToFire = 0;
+
+            if (run == false)
+            {
+                for (int i = 0; i < transform.childCount; i++)
+                {
+                    transform.GetChild(i).GetComponent<SpriteRenderer>().sprite = rearward;
+                }
+            }
+
             Run();
             return;
         }
-        else if (morale < 30)
+        else if (morale <= 30)
         {
-            timeToFire = 0;
+
+            if (retreat == false)
+            {
+                for (int i = 0; i < transform.childCount; i++)
+                {
+                    transform.GetChild(i).GetComponent<SpriteRenderer>().sprite = rearward;
+                }
+
+            }
+
             RunToRegroup();
+        }
+        else if (morale > 30)
+        {
+            if(retreat == true)
+            {
+                for (int i = 0; i < transform.childCount; i++)
+                {
+                    transform.GetChild(i).GetComponent<SpriteRenderer>().sprite = normalSprite;
+                }
+
+                retreat = false;
+            }
+            
+            Regroup();
+           
         }
     }
 
@@ -152,10 +199,23 @@ public class LineFrontScript : MonoBehaviour
     {
         transform.position += new Vector3(0f, 0f, 0.01f);
         morale = 14;
+        run = true;
     }
 
     private void RunToRegroup()
     {
+        timeToFire = 0;
         transform.position += new Vector3(0f, 0f, 0.01f);
+        retreat = true;
+    }
+
+    private void Regroup()
+    {
+        if(transform.position.z <= initialPosition.z)
+        {
+            return;
+        }
+
+        transform.position -= new Vector3(0f, 0f, 0.005f);
     }
 }
