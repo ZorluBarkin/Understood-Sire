@@ -32,6 +32,8 @@ public class LineFrontScript : MonoBehaviour
 
     [SerializeField] private GameObject smoke;
 
+    [SerializeField] private AudioSource musketFire;
+
     // to calculate moral Shock
     private int oldHealth;
     private int healthDifference;
@@ -218,7 +220,10 @@ public class LineFrontScript : MonoBehaviour
         {
             Vector3 smokePos = transform.position;
             smokePos.y += 1f; // make the smoke spawn in front of the unit
-            Instantiate(smoke, smokePos, Quaternion.identity); // smoke spawn
+            
+            Instantiate(smoke, smokePos, transform.rotation); // smoke spawn
+            
+            musketFire.PlayOneShot(musketFire.clip, 0.25f);
 
             if (hit.collider.CompareTag("Friendly"))
             {

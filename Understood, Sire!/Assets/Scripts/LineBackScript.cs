@@ -30,6 +30,8 @@ public class LineBackScript : MonoBehaviour
 
     [SerializeField] private GameObject smoke; // currently assign in editor
 
+    [SerializeField] private AudioSource musketFire;
+
     private Vector3 initialPosition; // for the return position of the retreat
 
     // to calculate moral Shock
@@ -215,7 +217,10 @@ public class LineBackScript : MonoBehaviour
         {
             Vector3 smokePos = transform.position;
             smokePos.y += 1f; // make the smoke spawn in front of the unit
-            Instantiate(smoke, smokePos, Quaternion.identity); // smoke spawn
+
+            Instantiate(smoke, smokePos, transform.rotation); // smoke spawn
+
+            musketFire.PlayOneShot(musketFire.clip, 0.25f);
 
             if (hit.collider.CompareTag("Enemy"))
             {
