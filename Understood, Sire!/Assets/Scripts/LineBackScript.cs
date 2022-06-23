@@ -97,16 +97,21 @@ public class LineBackScript : MonoBehaviour
 
             if (Physics.Raycast(rayPosition, transform.forward, out hit, range))
             {
-                damage = Volley(hit.distance);
-                
-                // Do Damage
-                hit.transform.gameObject.GetComponent<LineFrontScript>().health -= damage;
 
-                // Under Fire Stress
-                hit.transform.gameObject.GetComponent<LineFrontScript>().morale -= soldierCount;
+                if (hit.collider.CompareTag("Enemy"))
+                {
+                    damage = Volley(hit.distance);
+
+                    // Do Damage
+                    hit.transform.gameObject.GetComponent<LineFrontScript>().health -= damage;
+
+                    // Under Fire Stress
+                    hit.transform.gameObject.GetComponent<LineFrontScript>().morale -= soldierCount;
+
+                    timeToFire = 0;
+                }
+
             }
-
-            timeToFire = 0;
 
         }
 

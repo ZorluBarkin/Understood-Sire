@@ -32,7 +32,7 @@ public class LineFrontScript : MonoBehaviour
 
     // to calculate moral Shock
     private int oldHealth;
-    public int healthDifference;
+    private int healthDifference;
 
     // Start is called before the first frame update
     void Start()
@@ -52,6 +52,7 @@ public class LineFrontScript : MonoBehaviour
 
         // to rotate relative to the camera
         float rotateY = transform.position.x;
+        GetComponentInChildren<Transform>().eulerAngles = new Vector3(0f, rotateY, 0f);
 
         normalSprite = GetComponentInChildren<SpriteRenderer>().sprite;
 
@@ -96,16 +97,21 @@ public class LineFrontScript : MonoBehaviour
 
             if (Physics.Raycast(rayPosition, -transform.forward, out hit, range))
             {
-                damage = Volley(hit.distance);
 
-                // Do Damage
-                hit.transform.gameObject.GetComponent<LineBackScript>().health -= damage;
+                if (hit.collider.CompareTag("Friendly"))
+                {
+                    damage = Volley(hit.distance);
 
-                // Under Fire Stress
-                hit.transform.gameObject.GetComponent<LineBackScript>().morale -= soldierCount;
+                    // Do Damage
+                    hit.transform.gameObject.GetComponent<LineBackScript>().health -= damage;
+
+                    // Under Fire Stress
+                    hit.transform.gameObject.GetComponent<LineBackScript>().morale -= soldierCount;
+                    
+                    timeToFire = 0;
+                }
+                
             }
-
-            timeToFire = 0;
 
         }
 
