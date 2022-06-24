@@ -23,7 +23,7 @@ public class LineFrontScript : MonoBehaviour
 
     private float timeToFire = 16;
 
-    public float morale;
+    public float morale; // has to remain public
 
     [SerializeField] private Sprite rearward;
     private Sprite normalSprite;
@@ -31,6 +31,8 @@ public class LineFrontScript : MonoBehaviour
     private Vector3 initialPosition; // for the return position of the retreat
 
     [SerializeField] private GameObject smoke;
+
+    Vector3 smokePos;
 
     [SerializeField] private AudioSource musketFire;
 
@@ -61,6 +63,9 @@ public class LineFrontScript : MonoBehaviour
         normalSprite = GetComponentInChildren<SpriteRenderer>().sprite;
 
         initialPosition = transform.position;
+
+        smokePos = transform.position;
+        smokePos.y += 1f; // make the smoke spawn in front of the unit
     }
 
     // Update is called once per frame
@@ -217,16 +222,14 @@ public class LineFrontScript : MonoBehaviour
         RaycastHit hit;
 
         if (Physics.Raycast(rayPosition, -transform.forward, out hit, range))
-        {
-            Vector3 smokePos = transform.position;
-            smokePos.y += 1f; // make the smoke spawn in front of the unit
-            
-            Instantiate(smoke, smokePos, transform.rotation); // smoke spawn
-            
-            musketFire.PlayOneShot(musketFire.clip, 0.25f);
+        {   
 
             if (hit.collider.CompareTag("Friendly"))
             {
+                Instantiate(smoke, smokePos, transform.rotation); // smoke spawn
+
+                musketFire.PlayOneShot(musketFire.clip, 0.25f);
+
                 damage = Volley(hit.distance);
 
                 // Do Damage
@@ -236,6 +239,9 @@ public class LineFrontScript : MonoBehaviour
                 hit.transform.gameObject.GetComponent<LineBackScript>().morale -= soldierCount;
 
                 timeToFire = 0;
+            } else if (hit.collider.CompareTag("Enemy"))
+            {
+                attack = false;
             }
 
         }
