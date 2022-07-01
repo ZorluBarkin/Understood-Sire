@@ -26,7 +26,6 @@ public class LineBackScript : MonoBehaviour
 
     public float morale; // has to be public
 
-
     [SerializeField] private Sprite rearward;
     private Sprite normalSprite;
 
@@ -49,25 +48,23 @@ public class LineBackScript : MonoBehaviour
         morale = 100;
         oldHealth = health;
 
-        attack = false;
+        attack = true;
         retreat = false;
         run = false;
-
-        rayPosition = transform.position;
-        rayPosition.y += 0.5f;
 
         fireTime = 15 - (unitRank * 1.5f); // At max level Firing time is 7.5 seconds
 
         // to rotate relative to the camera
-        float rotateY = transform.position.x;
-        GetComponentInChildren<Transform>().eulerAngles = new Vector3(0f, rotateY, 0f);
+        /*float rotateY = transform.position.x;
+        GetComponentInChildren<Transform>().localEulerAngles = new Vector3(0f, rotateY, 0f);
+        //eulerAngles = new Vector3(0f, rotateY, 0f);*/
+
+        RotateChild();
 
         normalSprite = GetComponentInChildren<SpriteRenderer>().sprite;
 
         initialPosition = transform.position;
 
-        smokePos = transform.position;
-        smokePos.y += 1f;
     }
 
     // Update is called once per frame
@@ -77,7 +74,7 @@ public class LineBackScript : MonoBehaviour
 
         if (health <= 0)
         {
-            Destroy(this.transform.gameObject);
+            Destroy(transform.gameObject);
             return; // to end reading the code
         }
 
@@ -103,6 +100,12 @@ public class LineBackScript : MonoBehaviour
 
         if (attack && timeToFire >= fireTime)
         {
+            rayPosition = transform.position;
+            rayPosition.y += 0.5f;
+
+            smokePos = transform.position;
+            smokePos.y += 1f;
+
             Shoot();
         }
 
@@ -118,18 +121,30 @@ public class LineBackScript : MonoBehaviour
         morale += Time.deltaTime*2 + (unitRank * 2f);
     }
 
-    private int Volley(float distance) // add morale to accuracy calc
+    private int Volley(float distance)
     {
 
-        float numberOfHits = Random.Range(1, 18);
+        float numberOfHits = Random.Range(1, soldierCount-4);
 
         float damage = numberOfHits * (unitRank * Random.Range(1f, 20f) / 100) + (Random.Range(0f, 1f) * 10) + 10 * 1 / distance;
-        damage -= oldHealth - health; // reduce the number of guns
-        damage -= 2;
+
         int casualtiesInflicted = Mathf.RoundToInt(damage);
 
         return casualtiesInflicted;
 
+    }
+
+    private void RotateChild()
+    {
+        float rotateY = transform.position.x;
+        GameObject childObject;
+
+        for(int i = 0; i < transform.childCount; i++)
+        {
+            childObject = transform.GetChild(i).gameObject;
+            childObject.transform.eulerAngles = new Vector3(30f, 0f, -rotateY);
+        }
+        
     }
 
     private void DestroyChild()
@@ -225,6 +240,7 @@ public class LineBackScript : MonoBehaviour
 
             if (hit.collider.CompareTag("Enemy"))
             {
+
                 Instantiate(smoke, smokePos, transform.rotation); // smoke spawn
 
                 musketFire.PlayOneShot(musketFire.clip, 0.25f);
@@ -238,11 +254,16 @@ public class LineBackScript : MonoBehaviour
                 hit.transform.gameObject.GetComponent<LineFrontScript>().morale -= soldierCount;
 
                 timeToFire = 0;
+
             }else if (hit.collider.CompareTag("Friendly"))
             {
                 attack = false;
             }
 
+        }
+        else
+        {
+            transform.position += new Vector3(0f, 0f, 0.005f);
         }
 
     }
