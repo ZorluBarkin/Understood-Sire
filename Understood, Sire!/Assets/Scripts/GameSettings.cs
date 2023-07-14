@@ -7,6 +7,7 @@ public class GameSettings : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        // add multplie settings for frame rate and vSync
         Application.targetFrameRate = 62;
         QualitySettings.vSyncCount = 1;
 

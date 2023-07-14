@@ -9,6 +9,7 @@ public class LineFrontScript : MonoBehaviour
     public bool attack;
     private bool retreat;
     private bool run;
+    public bool engage; // this is used for commanding
 
     private const float range = 5f;
     private int soldierCount = 17;
@@ -50,6 +51,7 @@ public class LineFrontScript : MonoBehaviour
         attack = true;
         run = false;
         retreat = false;
+        engage = true;
 
         fireTime = 15 - (unitRank * 1.5f); // At max level Firing time is 7.5 seconds
 
@@ -92,7 +94,7 @@ public class LineFrontScript : MonoBehaviour
         // reload timer
         timeToFire += Time.deltaTime * morale / 100;
 
-        if (attack && timeToFire >= fireTime)
+        if (engage && attack && timeToFire >= fireTime)
         {
             rayPosition = transform.position;
             rayPosition.y += 0.5f;
@@ -119,12 +121,12 @@ public class LineFrontScript : MonoBehaviour
     private int Volley(float distance)
     {
 
-        float numberOfHits = Random.Range(1, soldierCount-4);
+        float numberOfHits = Random.Range(1, soldierCount);
 
         float damage = numberOfHits * (unitRank * Random.Range(1f, 20f) / 100) + (Random.Range(0f, 1f) * 10) + 10 * 1 / distance;
 
-        int casualtiesInflicted = Mathf.RoundToInt(damage);
-
+        int casualtiesInflicted = Mathf.RoundToInt(damage/1.5f);
+        
         return casualtiesInflicted;
 
     }
@@ -171,7 +173,7 @@ public class LineFrontScript : MonoBehaviour
             Run();
             return;
         }
-        else if (morale <= 30)
+        else if (morale <= 35)
         {
 
             if (retreat == false)
@@ -185,7 +187,7 @@ public class LineFrontScript : MonoBehaviour
 
             RunToRegroup();
         }
-        else if (morale > 30)
+        else if (morale > 35)
         {
             if(retreat == true)
             {
@@ -220,6 +222,7 @@ public class LineFrontScript : MonoBehaviour
     {
         if(transform.position.z <= initialPosition.z)
         {
+            attack = true;
             return;
         }
 
@@ -251,7 +254,7 @@ public class LineFrontScript : MonoBehaviour
                 timeToFire = 0;
             } else if (hit.collider.CompareTag("Enemy"))
             {
-                attack = false;
+                //attack = false;
             }
 
         }
